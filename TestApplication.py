@@ -86,7 +86,7 @@ def genNegative():
 
 genPositive()
 
-
+#python cool
 
 while abs(current_weight) >= 2:
 	if current_weight < -2:
