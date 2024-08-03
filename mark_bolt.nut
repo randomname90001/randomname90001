@@ -70,6 +70,7 @@
 	300.0,
 ];
 
+::TF_COND_DISGUISED <- 3
 ::TF_COND_MARKEDFORDEATH <- 30
 
 ::TF_STUN_BASE <- 450.0
@@ -195,6 +196,11 @@ class Cond
     return CustomWeaponTable[this][szKey]
 }
 
+::CTFPlayer.IsDisguised <- function()
+{
+    return this.InCond(TF_COND_DISGUISED)
+}
+
 ::IsClassname <- function(hWeapon, szClassname)
 {
     return hWeapon.GetClassname() == szClassname
@@ -247,6 +253,14 @@ function OnScriptHook_OnTakeDamage(params)
     {
         if (IsClassname(hWeapon, TF_WEAPON_CROSSBOW) && GetCustomWeaponMode(hWeapon) == TF_CROSSBOW_MARK)
         {
+	    // Disguised Spies are not affected.
+            if (hVictim.IsDisguised() && hVictim.GetDisguiseTeam() == hAttacker.GetTeam())
+                return;
+
+            // Cloaked players are not affected.
+            if (hVictim.IsFullyInvisible())
+                return;
+		
             local flDebuffDuration;
             local hLastHit = hWeapon.GetCustomProp("m_hLastHit")
             local flLastHitTime = hWeapon.GetCustomProp("m_flLastHitTime")
