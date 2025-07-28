@@ -13,9 +13,9 @@ if (hPlayer.ValidateScriptScope())
 				
 		if (!hThink.bTaunting)
 		{
+			local szPrint = "Taunt Duration: " + (hPlayer.GetTauntRemoveTime() - Time()).tostring();
 			hThink.bTaunting = true;
-			print("Taunt Duration: ");
-			printl(hPlayer.GetTauntRemoveTime() - Time());
+			ClientPrint(hPlayer, 4, szPrint);
 		}
 	
 		if (!hPlayer.InCond(7))	
